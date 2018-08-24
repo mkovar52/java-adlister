@@ -1,0 +1,22 @@
+CREATE DATABASE IF NOT EXISTS adlister_db;
+
+use adlister_db;
+
+CREATE TABLE IF NOT EXISTS users (
+id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+username VARCHAR(100) NOT NULL,
+email VARCHAR(100) NOT NULL,
+password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS ads (
+id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+user_id INT UNSIGNED NOT NULL,
+title VARCHAR(100) NOT NULL,
+description VARCHAR(255) NOT NULL,
+FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
+INSERT INTO users (username, email, password)
+VALUE ("mkovar", "mkovar@gmail.com", "codeup");
+
