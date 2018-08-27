@@ -1,5 +1,4 @@
 package com.codeup.adlister.dao;
-
 import com.codeup.adlister.models.Ad;
 import com.mysql.cj.jdbc.Driver;
 
@@ -11,12 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLAdsDao implements Ads {
-    private Connection connection = null;
+
+    private Connection connection;
 
     public MySQLAdsDao(Config config) {
         try {
             DriverManager.registerDriver(new Driver());
-            connection = DriverManager.getConnection(
+            this.connection = DriverManager.getConnection(
                 config.getUrl(),
                 config.getUser(),
                 config.getPassword()
@@ -26,6 +26,7 @@ public class MySQLAdsDao implements Ads {
         }
     }
 
+//    does it make sense to refactor this since all we're doing is listing all ads?
     @Override
     public List<Ad> all() {
         Statement stmt = null;
@@ -40,22 +41,24 @@ public class MySQLAdsDao implements Ads {
 
     @Override
     public Long insert(Ad ad) {
+
         try {
-            Statement stmt = connection.createStatement();
-            stmt.executeUpdate(createInsertQuery(ad), Statement.RETURN_GENERATED_KEYS);
-            ResultSet rs = stmt.getGeneratedKeys();
-            rs.next();
-            return rs.getLong(1);
+            PreparedStatement ps = connection.prepareStatement(createInsertQuery(ad), Statement.RETURN_GENERATED_KEYS);
+            ps.setLong(1, ad.getUserId());
+            ps.setString(2, ad.getTitle());
+            ps.setString(3, ad.getDescription());
+            long rowsEffected = ps.executeUpdate();
+            return rowsEffected;
+
         } catch (SQLException e) {
             throw new RuntimeException("Error creating a new ad.", e);
         }
     }
 
+//    why is the ad not being used here??
     private String createInsertQuery(Ad ad) {
-        return "INSERT INTO ads(user_id, title, description) VALUES "
-            + "(" + ad.getUserId() + ", "
-            + "'" + ad.getTitle() +"', "
-            + "'" + ad.getDescription() + "')";
+        String insertQuery = "INSERT INTO ads(user_id, title, description) VALUES(?, ?, ?)";
+        return insertQuery;
     }
 
     private Ad extractAd(ResultSet rs) throws SQLException {
