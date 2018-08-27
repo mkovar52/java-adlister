@@ -28,10 +28,11 @@ public class CreateAdServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-//        User user =
+//        casting user obj
+        User user = (User) request.getSession().getAttribute("user");
 
         Ad ad = new Ad(
-            1, // for now we'll hardcode the user id
+            user.getId(),
             request.getParameter("title"),
             request.getParameter("description")
         );
