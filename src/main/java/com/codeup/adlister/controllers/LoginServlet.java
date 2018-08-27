@@ -34,7 +34,6 @@ public class LoginServlet extends HttpServlet {
         }
 
 //        use check method from password utils
-
         boolean validAttempt = Password.check(password, user.getPassword());
 
         if (validAttempt) {

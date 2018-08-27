@@ -1,4 +1,37 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%
+
+//    boolean inputErrors = username.isEmpty()
+//            || email.isEmpty()
+//            || password.isEmpty()
+//            || (! password.equals(passwordConfirmation));
+
+
+    if (request.getMethod().equalsIgnoreCase("post")) {
+        String username = request.getParameter("username");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String passwordConfirmation = request.getParameter("confirm_password");
+
+        if (username.isEmpty()) {
+
+        }
+
+        if (email.isEmpty()) {
+
+        }
+
+        if (!password.equals(passwordConfirmation)) {
+
+        }
+
+    }
+
+%>
+
+
 <html>
 <head>
     <jsp:include page="partials/head.jsp">
@@ -8,6 +41,25 @@
 <body>
     <jsp:include page="partials/navbar.jsp" />
     <div class="container">
+
+        <c:choose>
+            <c:when test=" if (username.isEmpty()) {
+                    <h1>ENTER VALID USERNAME</h1>
+                    }}">
+                <h2>ENTER VALID USERNAME</h2>
+            </c:when>
+            <c:when test=" if (email.isEmpty()) {
+                    <h1>ENTER VALID EMAIL</h1>
+                    }}">
+                <h2>ENTER VALID USERNAME</h2>
+            </c:when>
+
+            <c:otherwise>
+
+            </c:otherwise>
+
+        </c:choose>
+
         <h1>Please fill in your information.</h1>
         <form action="/register" method="post">
             <div class="form-group">
